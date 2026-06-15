@@ -77,6 +77,10 @@ private:
     static void w_drop() { instance->pop(); }
     static void w_swap() { int32_t a = instance->pop(); int32_t b = instance->pop(); instance->push(a); instance->push(b); }
     static void w_dot()  { int32_t val = instance->pop(); if (instance->last_error == OK && instance->dot_hook) instance->dot_hook(val); }
+    static void w_mod()  { int32_t b = instance->pop(); instance->push(instance->pop() % (b ? b : 1)); }
+    static void w_over() { int32_t b = instance->pop(); int32_t a = instance->pop(); instance->push(a); instance->push(b); instance->push(a); }
+    static void w_rot()  { int32_t c = instance->pop(); int32_t b = instance->pop(); int32_t a = instance->pop(); instance->push(b); instance->push(c); instance->push(a); }
+    
 
     void execute_word(uint8_t idx) {
         if (last_error != OK) return;
@@ -107,6 +111,9 @@ public:
         add_builtin("*", w_mul); add_builtin("/", w_div);
         add_builtin("DUP", w_dup); add_builtin("DROP", w_drop);
         add_builtin("SWAP", w_swap); add_builtin(".", w_dot);
+        add_builtin("MOD", w_mod);
+        add_builtin("ROT", w_rot);
+        add_builtin("OVER", w_over);
     }
 
     void setDotHook(DotHook hook) { dot_hook = hook; }

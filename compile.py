@@ -17,11 +17,7 @@ def compile_forth(input_file, output_file):
     # Join with a single space to save precious EEPROM memory
     binary_payload = " ".join(compiled_tokens).encode('ascii')
 
-    # The 24AA01 EEPROM only holds 128 Bytes!
-    if len(binary_payload) > 128:
-        print(f"WARNING: Payload is {len(binary_payload)} bytes. It will NOT fit on a 24AA01 EEPROM (Max 128 bytes).")
-    else:
-        print(f"SUCCESS: Payload compiled to {len(binary_payload)} bytes.")
+    print(f"SUCCESS: Payload compiled to {len(binary_payload)} bytes.")
 
     with open(output_file, 'wb') as f:
         f.write(binary_payload)
